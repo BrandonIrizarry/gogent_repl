@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/BrandonIrizarry/gogent"
+	"github.com/BrandonIrizarry/gogent_repl/internal/cliargs"
 	"github.com/joho/godotenv"
 )
 
@@ -21,14 +22,22 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// The source of the configuration of the various fields is up
-	// to the particular frontend to decide (e.g. CLI arguments,
-	// YAML file, TUI/GUI widget, etc.)
+	cliArgs, err := cliargs.New()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	g := gogent.Gogent{
-		WorkingDir:    ".",
+		WorkingDir:    cliArgs.WorkingDir,
 		MaxFilesize:   100_000,
 		MaxIterations: 20,
 		LLMModel:      "gemini-2.5-flash-lite-preview-09-2025",
+		Debug:         cliArgs.Debug,
+	}
+
+	ask, err := g.Init()
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	// The REPL loop.
@@ -38,7 +47,7 @@ func main() {
 			break
 		}
 
-		response, err := g.Ask(prompt)
+		response, err := ask(prompt)
 		if err != nil {
 			log.Fatal(err)
 		}
