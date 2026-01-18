@@ -31,6 +31,7 @@ func main() {
 		LLMModel:      "gemini-2.5-flash-lite-preview-09-2025",
 	}
 
+	// The REPL loop.
 	for {
 		prompt, quit := getPrompt()
 		if quit {
