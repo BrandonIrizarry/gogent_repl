@@ -1,4 +1,4 @@
-module github.com/BrandonIrizarry/gogent_basic
+module github.com/BrandonIrizarry/gogent_repl
 
 go 1.25.5
 
