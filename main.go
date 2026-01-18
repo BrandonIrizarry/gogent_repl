@@ -31,7 +31,7 @@ func main() {
 		WorkingDir:    cliArgs.WorkingDir,
 		MaxFilesize:   100_000,
 		MaxIterations: 20,
-		LLMModel:      "gemini-2.0-flash-001",
+		LLMModel:      "gemini-2.0-flash",
 		Debug:         cliArgs.Debug,
 	}
 
