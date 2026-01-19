@@ -9,6 +9,7 @@ import (
 
 	"github.com/BrandonIrizarry/gogent"
 	"github.com/BrandonIrizarry/gogent_repl/internal/cliargs"
+	"github.com/charmbracelet/glamour"
 	"github.com/joho/godotenv"
 )
 
@@ -55,12 +56,17 @@ func main() {
 			break
 		}
 
-		response, err := ask(prompt)
+		responseText, err := ask(prompt)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		fmt.Println(response)
+		if glamourText, err := glamour.Render(responseText, "light"); err != nil {
+			log.Println("Glamour rendering failed, defaulting to plain text")
+			fmt.Println(responseText)
+		} else {
+			fmt.Println(glamourText)
+		}
 	}
 
 	fmt.Printf("Token counts: %+v\n", g.TokenCounts())
