@@ -2,15 +2,15 @@
 
 A proof-of-concept CLI frontend for [Gogent](https://github.com/BrandonIrizarry/gogent).
 
-Gogent is an API for frontends to provide agentic services to users;
-this is one such frontend.
+Gogent is an API for frontends to provide agentic services to
+users. This is one such frontend.
 
 
 ## Installation
 
 `go install github.com/BrandonIrizarry/gogent_repl`
 
-## CLI Flags
+## Flags
 
 ### dir
 
