@@ -12,6 +12,14 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// A list of models we can conveniently select from.
+const (
+	GeminiTwoPointFiveFlash            = "gemini-2.5-flash"
+	GeminiTwoFlash                     = "gemini-2.0-flash"
+	GeminiTwoPointFiveFlashLite        = "gemini-2.5-flash-lite"
+	GeminiTwoPointFiveFlashLitePreview = "gemini-2.5-flash-lite-preview-09-2025"
+)
+
 func main() {
 	// Load our environment variables (including the Gemini API
 	// key.)
@@ -31,7 +39,7 @@ func main() {
 		WorkingDir:    cliArgs.WorkingDir,
 		MaxFilesize:   100_000,
 		MaxIterations: 20,
-		LLMModel:      "gemini-2.0-flash",
+		LLMModel:      GeminiTwoPointFiveFlashLite,
 		Debug:         cliArgs.Debug,
 	}
 
