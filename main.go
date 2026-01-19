@@ -54,6 +54,8 @@ func main() {
 
 		fmt.Println(response)
 	}
+
+	fmt.Printf("Token counts: %+v\n", g.TokenCounts())
 }
 
 func getPrompt() (string, bool) {
