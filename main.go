@@ -1,14 +1,12 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"log"
-	"os"
-	"strings"
 
 	"github.com/BrandonIrizarry/gogent"
 	"github.com/BrandonIrizarry/gogent_repl/internal/cliargs"
+	"github.com/BrandonIrizarry/gogent_repl/internal/promptbox"
 	"github.com/charmbracelet/glamour"
 	"github.com/joho/godotenv"
 )
@@ -51,8 +49,12 @@ func main() {
 
 	// The REPL loop.
 	for {
-		prompt, quit := getPrompt()
-		if quit {
+		prompt, err := promptbox.GetPrompt()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if prompt == "" {
 			break
 		}
 
@@ -69,39 +71,6 @@ func main() {
 		}
 	}
 
+	fmt.Println("Bye!")
 	fmt.Printf("Token counts: %+v\n", g.TokenCounts())
-}
-
-func getPrompt() (string, bool) {
-	fmt.Println()
-	fmt.Println("Ask the agent something (press Enter twice to submit your prompt)")
-	fmt.Println("Submit a blank prompt to exit")
-	fmt.Print("> ")
-
-	scanner := bufio.NewScanner(os.Stdin)
-	var bld strings.Builder
-
-	for scanner.Scan() {
-		text := scanner.Text()
-
-		if strings.TrimSpace(text) == "" {
-			break
-		}
-
-		// Write an extra space, to make sure that words
-		// across newline boundaries don't run on to each
-		// other.
-		bld.WriteString(" ")
-		bld.WriteString(text)
-	}
-
-	// Nothing was written, meaning we must signal to our caller
-	// to not invoke the agent REPL.
-	if bld.Len() == 0 {
-		fmt.Println("Bye!")
-		return "", true
-	}
-
-	fmt.Println("Thinking...")
-	return bld.String(), false
 }
