@@ -41,7 +41,7 @@ func main() {
 		MaxFilesize:   100_000,
 		MaxIterations: 20,
 		LLMModel:      GeminiTwoPointFiveFlashLite,
-		Debug:         cliArgs.Debug,
+		LogLevel:      cliArgs.LogLevel,
 	}
 
 	ask, err := g.Init()

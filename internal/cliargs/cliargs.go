@@ -10,14 +10,14 @@ import (
 
 type cliArguments struct {
 	WorkingDir string
-	Debug      bool
+	LogLevel   string
 }
 
 func New() (cliArguments, error) {
 	var cliArgs cliArguments
 
 	flag.StringVar(&cliArgs.WorkingDir, "dir", ".", "Set project directory")
-	flag.BoolVar(&cliArgs.Debug, "debug", false, "Whether agent should write debugging logs")
+	flag.StringVar(&cliArgs.LogLevel, "log", "error", "Set log level to one of debug, info, warn, or error")
 	flag.Parse()
 
 	// Handle the 'dir' argument.
