@@ -1,3 +1,4 @@
 .env
 *.org
 *.txt
+/.history
