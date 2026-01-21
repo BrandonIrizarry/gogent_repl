@@ -58,7 +58,6 @@ func main() {
 	// If -dir wasn't provided, present the radio-button selection
 	// widget to the user.
 	if cliArgs.WorkingDir == "" {
-
 		// The choices slice should have something in it, else
 		// SelectWorkingDir will panic with an out-of-bounds
 		// access to its counterpart inside the TUI model.
