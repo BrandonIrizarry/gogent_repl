@@ -3,6 +3,7 @@ package cliargs
 import (
 	"errors"
 	"flag"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -37,7 +38,16 @@ func New() (cliArguments, error) {
 
 	info, err := os.Stat(cliArgs.WorkingDir)
 	if err != nil {
-		return cliArguments{}, err
+		// Remove some of the gobbledygook from the error
+		// otherwise returned here.
+		var pathErr *os.PathError
+		if errors.As(err, &pathErr) {
+			return cliArguments{}, fmt.Errorf("%s: %v", pathErr.Path, pathErr.Err)
+		}
+
+		// Else, for now, forward the error onward with a
+		// meaningful preface.
+		return cliArguments{}, fmt.Errorf("invalid working directory argument: %w", err)
 	}
 
 	if !info.IsDir() {
