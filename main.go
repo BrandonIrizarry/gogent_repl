@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"slices"
 
 	"github.com/BrandonIrizarry/gogent"
 	"github.com/BrandonIrizarry/gogent_repl/internal/cliargs"
@@ -45,15 +46,18 @@ func main() {
 	}
 	defer historyFile.Close()
 
+	// Load these up front unconditionally, since we either use
+	// them as our selections, or else use them to avoid writing a
+	// duplicate history entry.
+	var choices []string
+	scanner := bufio.NewScanner(historyFile)
+	for scanner.Scan() {
+		choices = append(choices, scanner.Text())
+	}
+
 	// If -dir wasn't provided, present the radio-button selection
 	// widget to the user.
 	if cliArgs.WorkingDir == "" {
-		var choices []string
-
-		scanner := bufio.NewScanner(historyFile)
-		for scanner.Scan() {
-			choices = append(choices, scanner.Text())
-		}
 
 		// The choices slice should have something in it, else
 		// SelectWorkingDir will panic with an out-of-bounds
@@ -80,10 +84,9 @@ func main() {
 
 		cliArgs.WorkingDir = wdir
 	} else {
-		// Since a fresh argument was passed in, we can assume
-		// it's likely a new project, so write it into the
-		// history file.
-		historyFile.WriteString(cliArgs.WorkingDir + "\n")
+		if !slices.Contains(choices, cliArgs.WorkingDir) {
+			historyFile.WriteString(cliArgs.WorkingDir + "\n")
+		}
 	}
 
 	g := gogent.Gogent{
