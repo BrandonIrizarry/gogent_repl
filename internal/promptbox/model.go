@@ -58,7 +58,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func (m model) View() string {
 	var view strings.Builder
 
-	view.WriteString(m.textarea.View())
+	view.WriteString("\n" + m.textarea.View())
 	view.WriteString("\n\n(ctrl+c to quit, ctrl+\\ to submit prompt)\n\n")
 
 	return view.String()

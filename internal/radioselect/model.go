@@ -55,7 +55,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m model) View() string {
 	s := strings.Builder{}
-	s.WriteString("Recent projects\n\n")
+	s.WriteString("\nRecent projects\n\n")
 
 	for i := range len(m.choices) {
 		if m.cursorPos == i {
@@ -66,7 +66,7 @@ func (m model) View() string {
 		s.WriteString(m.choices[i])
 		s.WriteString("\n")
 	}
-	s.WriteString("\n(Press Enter to submit, ctrl+c to quit)\n")
+	s.WriteString("\n(Press Enter to submit, ctrl+c to quit)\n\n")
 
 	return s.String()
 }
