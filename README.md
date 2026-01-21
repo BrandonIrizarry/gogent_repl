@@ -15,9 +15,10 @@ users. This is one such frontend.
 ### dir
 
 The path to the project directory (the *working directory*) the LLM
-should provide assistance for.
+should provide assistance for. If omitted, a TUI selection widget
+appears prompting the user for a recent project directory.
 
-### debug
+### log
 
-A boolean flag for setting the backend's logging verbosity to include
-debug-logs.
+The log level used by the Gogent backend. One of `debug`, `info`,
+`warn`, or `error`. Defaults to `error`.
