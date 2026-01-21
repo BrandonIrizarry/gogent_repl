@@ -1,12 +1,15 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/BrandonIrizarry/gogent"
 	"github.com/BrandonIrizarry/gogent_repl/internal/cliargs"
 	"github.com/BrandonIrizarry/gogent_repl/internal/promptbox"
+	"github.com/BrandonIrizarry/gogent_repl/internal/radioselect"
 	"github.com/charmbracelet/glamour"
 	"github.com/joho/godotenv"
 )
@@ -32,6 +35,55 @@ func main() {
 	cliArgs, err := cliargs.New()
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	// Since there are no issues with the working directory, we
+	// can add it to the history file.
+	historyFile, err := os.OpenFile(".history", os.O_CREATE|os.O_RDWR|os.O_APPEND, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer historyFile.Close()
+
+	// If -dir wasn't provided, present the radio-button selection
+	// widget to the user.
+	if cliArgs.WorkingDir == "" {
+		var choices []string
+
+		scanner := bufio.NewScanner(historyFile)
+		for scanner.Scan() {
+			choices = append(choices, scanner.Text())
+		}
+
+		// The choices slice should have something in it, else
+		// SelectWorkingDir will panic with an out-of-bounds
+		// access to its counterpart inside the TUI model.
+		//
+		// Ideally, we'd give the user a way to enter or else
+		// select a file from some kind of widget.
+		if len(choices) == 0 {
+			log.Fatal("-dir missing, and no saved choices inside history file")
+		}
+
+		wdir, err := radioselect.SelectWorkingDir(choices)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		// An empty wdir result means that the user ctrl+c'ed
+		// out of the radio selection widget; for now, simply
+		// quit the application.
+		if wdir == "" {
+			fmt.Println("Bye!")
+			os.Exit(0)
+		}
+
+		cliArgs.WorkingDir = wdir
+	} else {
+		// Since a fresh argument was passed in, we can assume
+		// it's likely a new project, so write it into the
+		// history file.
+		historyFile.WriteString(cliArgs.WorkingDir + "\n")
 	}
 
 	g := gogent.Gogent{

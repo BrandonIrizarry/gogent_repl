@@ -6,6 +6,7 @@ import (
 
 	"github.com/charmbracelet/bubbles/textarea"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 )
 
 type model struct {
@@ -62,8 +63,6 @@ func (m model) View() string {
 
 	return view.String()
 }
-
-)
 
 func GetPrompt() (string, error) {
 	txt := textarea.New()

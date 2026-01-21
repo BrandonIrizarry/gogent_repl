@@ -17,7 +17,7 @@ type cliArguments struct {
 func New() (cliArguments, error) {
 	var cliArgs cliArguments
 
-	flag.StringVar(&cliArgs.WorkingDir, "dir", ".", "Set project directory")
+	flag.StringVar(&cliArgs.WorkingDir, "dir", "", "Set project directory")
 	flag.StringVar(&cliArgs.LogLevel, "log", "error", "Set log level to one of debug, info, warn, or error")
 	flag.Parse()
 
@@ -25,6 +25,13 @@ func New() (cliArguments, error) {
 	hdir, err := os.UserHomeDir()
 	if err != nil {
 		return cliArguments{}, err
+	}
+
+	// If -dir is omitted, flag this to the caller so that it can
+	// then obtain the working directory from a radio selection
+	// widget, or something similar.
+	if cliArgs.WorkingDir == "" {
+		return cliArgs, nil
 	}
 
 	cliArgs.WorkingDir, err = filepath.Abs(cliArgs.WorkingDir)
