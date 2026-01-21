@@ -96,6 +96,9 @@ func main() {
 		LogLevel:      cliArgs.LogLevel,
 	}
 
+	// Initialize Gogent. This also loads Gogent's "ask" function,
+	// which is what we use to drive our conversation with the
+	// agent.
 	ask, err := g.Init()
 	if err != nil {
 		log.Fatal(err)
