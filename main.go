@@ -61,9 +61,6 @@ func main() {
 		// The choices slice should have something in it, else
 		// SelectWorkingDir will panic with an out-of-bounds
 		// access to its counterpart inside the TUI model.
-		//
-		// Ideally, we'd give the user a way to enter or else
-		// select a file from some kind of widget.
 		if len(choices) == 0 {
 			log.Fatal("-dir missing, and no saved choices inside history file")
 		}
