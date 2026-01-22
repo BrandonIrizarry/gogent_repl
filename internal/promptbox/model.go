@@ -34,9 +34,16 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.promptText = m.textarea.Value()
 			return m, tea.Quit
 
-		default:
-			// Any keystroke other than quitting will
-			// bring focus back to the text editing
+		case tea.KeyEsc:
+			// This removes focus from the text editing
+			// widget: useful for when we want to scroll
+			// up to view messages logged to the console.
+			if m.textarea.Focused() {
+				m.textarea.Blur()
+			}
+
+		case tea.KeyHome:
+			// Bring focus back to the text editing
 			// widget.
 			if !m.textarea.Focused() {
 				cmd = m.textarea.Focus()
@@ -66,7 +73,7 @@ func (m model) View() string {
 
 func GetPrompt() (string, error) {
 	txt := textarea.New()
-	txt.Placeholder = "Write your prompt here..."
+	txt.Placeholder = "Press Home to focus here, Esc to remove focus"
 	txt.ShowLineNumbers = false
 
 	// Don't set a background highlighting color, since at least
