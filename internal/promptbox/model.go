@@ -42,8 +42,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.textarea.Blur()
 			}
 
-		case tea.KeyHome:
-			// Bring focus back to the text editing
+		case tea.KeyRunes:
+			// Whenever the user starts typing _letters_,
+			// bring focus back to the text editing
 			// widget.
 			if !m.textarea.Focused() {
 				cmd = m.textarea.Focus()
@@ -73,7 +74,7 @@ func (m model) View() string {
 
 func GetPrompt() (string, error) {
 	txt := textarea.New()
-	txt.Placeholder = "Press Home to focus here, Esc to remove focus"
+	txt.Placeholder = "Start typing your prompt to focus here, or Esc to remove focus"
 	txt.ShowLineNumbers = false
 
 	// Don't set a background highlighting color, since at least
