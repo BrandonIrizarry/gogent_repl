@@ -66,7 +66,7 @@ func (m model) View() string {
 	return s.String()
 }
 
-func SelectWorkingDir(choices []string) (string, error) {
+func LoadList(choices []string) (string, error) {
 	p := tea.NewProgram(model{
 		choices: choices,
 	})

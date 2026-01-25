@@ -63,7 +63,7 @@ func main() {
 			log.Fatal("-dir missing, and no saved choices inside history file")
 		}
 
-		wdir, err := radioselect.SelectWorkingDir(choices)
+		wdir, err := radioselect.LoadList(choices)
 		if err != nil {
 			log.Fatal(err)
 		}
