@@ -8,9 +8,9 @@ import (
 )
 
 type model struct {
-	cursorPos  int
-	workingDir string
-	choices    []string
+	cursorPos int
+	choice    string
+	choices   []string
 }
 
 func (m model) Init() tea.Cmd {
@@ -22,14 +22,14 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		switch msg.Type {
 		case tea.KeyCtrlC:
-			if m.workingDir != "" {
-				slog.Warn("Working directory has non-zero value", slog.String("value", m.workingDir))
+			if m.choice != "" {
+				slog.Warn("Working directory has non-zero value", slog.String("value", m.choice))
 			}
 
 			return m, tea.Quit
 
 		case tea.KeyEnter:
-			m.workingDir = m.choices[m.cursorPos]
+			m.choice = m.choices[m.cursorPos]
 			return m, tea.Quit
 
 		case tea.KeyDown:
@@ -82,5 +82,5 @@ func SelectWorkingDir(choices []string) (string, error) {
 	}
 
 	rsel := m.(model)
-	return rsel.workingDir, nil
+	return rsel.choice, nil
 }
