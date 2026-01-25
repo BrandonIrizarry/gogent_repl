@@ -63,7 +63,7 @@ func main() {
 			log.Fatal("-dir missing, and no saved choices inside history file")
 		}
 
-		wdir, err := radioselect.LoadList(choices)
+		wdir, err := radioselect.LoadList("Recent projects", choices)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -83,11 +83,24 @@ func main() {
 		}
 	}
 
+	// Ask the user for the model they wish to use
+	modelNames := []string{
+		GeminiTwoFlash,
+		GeminiTwoPointFiveFlash,
+		GeminiTwoPointFiveFlashLite,
+		GeminiTwoPointFiveFlashLitePreview,
+	}
+
+	modelName, err := radioselect.LoadList("Model name", modelNames)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	g := gogent.Gogent{
 		WorkingDir:    cliArgs.WorkingDir,
 		MaxFilesize:   100_000,
 		MaxIterations: 20,
-		LLMModel:      GeminiTwoPointFiveFlashLite,
+		LLMModel:      modelName,
 		LogLevel:      cliArgs.LogLevel,
 	}
 

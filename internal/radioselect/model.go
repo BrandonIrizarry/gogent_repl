@@ -10,6 +10,7 @@ type model struct {
 	cursorPos int
 	choice    string
 	choices   []string
+	header    string
 }
 
 func (m model) Init() tea.Cmd {
@@ -50,7 +51,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m model) View() string {
 	s := strings.Builder{}
-	s.WriteString("\nRecent projects\n\n")
+	s.WriteString("\n" + m.header + "\n\n")
 
 	for i := range len(m.choices) {
 		if m.cursorPos == i {
@@ -66,8 +67,9 @@ func (m model) View() string {
 	return s.String()
 }
 
-func LoadList(choices []string) (string, error) {
+func LoadList(header string, choices []string) (string, error) {
 	p := tea.NewProgram(model{
+		header:  header,
 		choices: choices,
 	})
 
