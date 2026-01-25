@@ -38,8 +38,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Since there are no issues with the working directory, we
-	// can add it to the history file.
 	historyFile, err := os.OpenFile(".history", os.O_CREATE|os.O_RDWR|os.O_APPEND, 0644)
 	if err != nil {
 		log.Fatal(err)
