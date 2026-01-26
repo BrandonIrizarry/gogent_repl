@@ -167,18 +167,17 @@ func main() {
 			break
 		}
 
-		var responseText string
-
-		responseText, err = ask(prompt)
+		responseText, err := ask(prompt)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		if responseText, err = glamour.Render(responseText, "light"); err != nil {
+		if glamourText, err := glamour.Render(responseText, "light"); err != nil {
 			log.Println("Glamour rendering failed, defaulting to plain text")
+			fmt.Println(responseText)
+		} else {
+			fmt.Println(glamourText)
 		}
-
-		fmt.Println(responseText)
 	}
 
 	fmt.Println("Bye!")
