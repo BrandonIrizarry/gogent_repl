@@ -27,7 +27,7 @@ const (
 
 func main() {
 	// Load a log file to write logs to as well.
-	logFilename := fmt.Sprintf(".logs-%s", time.Now())
+	logFilename := fmt.Sprintf(".logs-%d", time.Now().Unix())
 	logFile, err := os.OpenFile(logFilename, os.O_CREATE|os.O_WRONLY, 0600)
 	if err != nil {
 		log.Fatal(err)
