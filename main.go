@@ -145,7 +145,6 @@ func main() {
 		MaxFilesize:   100_000,
 		MaxIterations: 20,
 		LLMModel:      modelName,
-		LogLevel:      cliArgs.LogLevel,
 	}
 
 	// Initialize Gogent. This also loads Gogent's "ask" function,
