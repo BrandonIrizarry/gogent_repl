@@ -67,11 +67,19 @@ func (m model) View() string {
 	return s.String()
 }
 
-func LoadList(header string, choices []string) (string, error) {
-	p := tea.NewProgram(model{
-		header:  header,
-		choices: choices,
-	})
+func LoadList(header string, choices []string, initialChoice string) (string, error) {
+	choiceToCursorPos := map[string]int{}
+	for i, c := range choices {
+		choiceToCursorPos[c] = i
+	}
+
+	inputModel := model{
+		header:    header,
+		choices:   choices,
+		cursorPos: choiceToCursorPos[initialChoice],
+	}
+
+	p := tea.NewProgram(inputModel)
 
 	m, err := p.Run()
 	if err != nil {

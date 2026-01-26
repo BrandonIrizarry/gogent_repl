@@ -3,9 +3,11 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"slices"
+	"time"
 
 	"github.com/BrandonIrizarry/gogent"
 	"github.com/BrandonIrizarry/gogent_repl/internal/cliargs"
@@ -24,6 +26,16 @@ const (
 )
 
 func main() {
+	// Load a log file to write logs to as well.
+	logFilename := fmt.Sprintf(".logs-%s", time.Now())
+	logFile, err := os.OpenFile(logFilename, os.O_CREATE|os.O_WRONLY, 0600)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer logFile.Close()
+
+	log.SetOutput(io.MultiWriter(os.Stdout, logFile))
+
 	// Load our environment variables (including the Gemini API
 	// key.)
 	//
@@ -63,7 +75,7 @@ func main() {
 			log.Fatal("-dir missing, and no saved choices inside history file")
 		}
 
-		wdir, err := radioselect.LoadList("Recent projects", choices)
+		wdir, err := radioselect.LoadList("Recent projects", choices, choices[0])
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -91,10 +103,33 @@ func main() {
 		GeminiTwoPointFiveFlashLitePreview,
 	}
 
-	modelName, err := radioselect.LoadList("Model name", modelNames)
+	// The user's selection from the previous session is found in
+	// './default-model'; use it as the default list selection
+	// here.
+	defaultModelFile, err := os.OpenFile(".default-model", os.O_CREATE|os.O_RDWR, 0600)
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer defaultModelFile.Close()
+
+	var defaultModel string
+	buf, err := io.ReadAll(defaultModelFile)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if len(buf) == 0 {
+		defaultModel = modelNames[0]
+	} else {
+		defaultModel = string(buf)
+	}
+
+	modelName, err := radioselect.LoadList("Model name", modelNames, defaultModel)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defaultModelFile.WriteString(modelName)
 
 	g := gogent.Gogent{
 		WorkingDir:    cliArgs.WorkingDir,
