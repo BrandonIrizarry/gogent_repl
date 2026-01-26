@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"slices"
+	"strings"
 	"time"
 
 	"github.com/BrandonIrizarry/gogent"
@@ -129,6 +130,10 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// Erase the current contents before writing the model name.
+	defaultModelFile.Seek(-int64(len(buf)), io.SeekCurrent)
+	defaultModelFile.WriteString(strings.Repeat(" ", len(buf)))
+	defaultModelFile.Seek(-int64(len(buf)), io.SeekCurrent)
 	defaultModelFile.WriteString(modelName)
 
 	g := gogent.Gogent{
