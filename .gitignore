@@ -3,4 +3,4 @@
 *.txt
 /.history
 /.default-model
-/.logs*
+/logs
