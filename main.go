@@ -180,5 +180,4 @@ func main() {
 	}
 
 	fmt.Println("Bye!")
-	fmt.Printf("Token counts: %+v\n", g.TokenCounts())
 }
