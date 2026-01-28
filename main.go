@@ -166,11 +166,12 @@ func main() {
 			break
 		}
 
-		responseText, err := ask(prompt)
+		responseText, metadata, err := ask(prompt)
 		if err != nil {
 			log.Fatal(err)
 		}
 
+		log.Printf("Token counts: %+v", metadata)
 		if glamourText, err := glamour.Render(responseText, "light"); err != nil {
 			log.Println("Glamour rendering failed, defaulting to plain text")
 			fmt.Println(responseText)
