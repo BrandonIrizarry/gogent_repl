@@ -5,6 +5,9 @@ A proof-of-concept CLI frontend for [Gogent](https://github.com/BrandonIrizarry/
 Gogent is an API for frontends to provide agentic services to
 users. This is one such frontend.
 
+This project is still in heavy active development. It uses a local
+version of the Gogent backend instead of the published version, since
+it too is under heavy active development.
 
 ## Installation
 
